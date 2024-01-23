@@ -44,6 +44,6 @@ app.get("*", (req: Request, res: Response) => {
   res.sendFile(path.join(__dirname, "../../frontend/dist/index.html"))
 });
 
-app.listen(8000, () => {
-  console.log("Server is started on localhost:8000");
+app.listen(7000, () => {
+  console.log("Server is started on localhost:7000");
 });
