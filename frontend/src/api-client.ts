@@ -4,7 +4,7 @@ import { SignInFormData } from "./pages/SignIn";
 import { HotelType } from "../../backend/src/shared/types";
 
 const API_BASE_URL =
-  import.meta.env.VITE_API_BASE_URL || "http://localhost:7000";
+  import.meta.env.VITE_API_BASE_URL || "";
 export const register = async (formData: RegisterFormData) => {
   const response = await fetch(`${API_BASE_URL}/api/users/register`, {
     method: "POST",
