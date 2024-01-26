@@ -41,10 +41,9 @@ test("Should allow user to add a hotel", async ({ page }) => {
   await page.locator('[name="adultCount"]').fill("4");
   await page.locator('[name="childCount"]').fill("2");
 
-  await page.setInputFiles('[name="imageUrls"]', [
+  await page.setInputFiles('[name="imageFiles"]', [
     path.join(__dirname, "files", "1.jpg"),
     path.join(__dirname, "files", "2.jpg"),
-    path.join(__dirname, "files", "3.jpg"),
   ]);
 
   await page.getByRole("button", { name: "Save" }).click();
@@ -69,4 +68,27 @@ test("Should display Hotels", async ({ page }) => {
     page.getByRole("link", { name: "View Details" }).nth(1)
   ).toBeVisible();
   await expect(page.getByRole("link", { name: "Add Hotel" })).toBeVisible();
+});
+
+test("Should edit hotel", async ({ page }) => {
+  await page.goto(`${UI_URl}/my-hotels`);
+
+  await page.getByRole("link", { name: "View Details" }).nth(0).click();
+
+  await page.waitForSelector('[name="name"]', { state: "attached" });
+
+  await expect(page.locator('[name="name"]')).toHaveValue("Berserk");
+  await page.locator('[name="name"]').fill("Berserk Updated")
+
+  await page.getByRole('button', {name: 'Save'}).click()
+  await expect(page.getByText('Hotel Edited!')).toBeVisible()
+  
+  await page.reload()
+  
+  await expect(page.locator('[name="name"]')).toHaveValue("Berserk Updated")
+  
+  await page.locator('[name="name"]').fill("Berserk")
+  await page.getByRole('button', {name: 'Save'}).click()
+  await expect(page.getByText('Hotel Edited!')).toBeVisible()
+  
 });
