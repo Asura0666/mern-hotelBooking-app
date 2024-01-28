@@ -2,7 +2,7 @@ import { useForm } from "react-hook-form";
 import { useMutation, useQueryClient } from "react-query";
 import * as apiClient from "../api-client";
 import { useAppContext } from "../contexts/AppContext";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 
 export type SignInFormData = {
   email: string;
@@ -13,6 +13,7 @@ const SignIn = () => {
   const { showToast } = useAppContext();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
+  const location = useLocation();
 
   const {
     register,
@@ -24,7 +25,7 @@ const SignIn = () => {
     onSuccess: async () => {
       showToast({ message: "Sign in Successful!", type: "Success" });
       await queryClient.invalidateQueries("validateToken");
-      navigate("/");
+      navigate(location.state?.from?.pathname || "/");
     },
     onError: (error: Error) => {
       showToast({ message: error.message, type: "Error" });
@@ -39,22 +40,22 @@ const SignIn = () => {
     <form onSubmit={onSubmit} className="flex flex-col gap-5">
       <h2 className="text-3xl font-bold">Sign In</h2>
 
-      <label className="text-gray-700 text-sm font-bold flex-1">
+      <label className="flex-1 text-sm font-bold text-gray-700">
         Email:
         <input
           type="email"
-          className="border rounded w-full py-1 px-2 font-normal"
+          className="w-full px-2 py-1 font-normal border rounded"
           {...register("email", { required: "This field is required" })}
         ></input>
         {errors.email && (
           <span className="text-red-500">{errors.email.message}</span>
         )}
       </label>
-      <label className="text-gray-700 text-sm font-bold flex-1">
+      <label className="flex-1 text-sm font-bold text-gray-700">
         Password:
         <input
           type="password"
-          className="border rounded w-full py-1 px-2 font-normal"
+          className="w-full px-2 py-1 font-normal border rounded"
           {...register("password", {
             required: "This field is required",
             minLength: {
@@ -69,11 +70,14 @@ const SignIn = () => {
       </label>
       <span className="flex items-center justify-between">
         <span className="text-sm">
-          Not Registered? <Link className="underline" to="/register">Create an account here</Link>
+          Not Registered?{" "}
+          <Link className="underline" to="/register">
+            Create an account here
+          </Link>
         </span>
         <button
           type="submit"
-          className="bg-blue-600 text-white p-2 font-bold hover:bg-blue-500 text-xl"
+          className="p-2 text-xl font-bold text-white bg-blue-600 hover:bg-blue-500"
         >
           Login
         </button>
