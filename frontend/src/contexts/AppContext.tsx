@@ -4,7 +4,7 @@ import { useQuery } from "react-query";
 import * as apiClient from "../api-client";
 import { loadStripe, Stripe } from "@stripe/stripe-js";
 
-const STRIPE_PUB_KEY = import.meta.env.VITE_STRIPE_PUB_KEY || "pk_test_51OefhESF2dCjZ5xobIpBEWowBpOa1LwblGDYrmG6wzekEJaoQHoiA1EDLZjJskZ8Z03Y5CsnBH4k3Lf9qQHZLjXX00J2E3NHuF"
+const STRIPE_PUB_KEY = import.meta.env.VITE_STRIPE_PUB_KEY || "";
 
 type ToastMessage = {
   message: string;
